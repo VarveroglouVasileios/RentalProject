@@ -21,5 +21,6 @@ const focusMain = () => document.getElementById('main')?.focus()
   <footer class="foot">
     <p class="foot-logo" aria-hidden="true">Bluewake</p>
     <p>Φανταστική επιχείρηση · Οι κρατήσεις δεν είναι πραγματικές<br />Σχεδιασμός και υλοποίηση: Βασίλειος Βαρβέρογλου · Οι φωτογραφίες είναι δημιουργημένες με AI και ενδεικτικές.</p>
+    <p><RouterLink to="/privacy" class="foot-link">Απόρρητο και cookies</RouterLink></p>
   </footer>
 </template>

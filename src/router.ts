@@ -8,6 +8,7 @@ export const router = createRouter({
     { path: '/book', name: 'book', component: () => import('./views/BookView.vue') },
     { path: '/rental/:ref', name: 'rental', component: () => import('./views/RentalView.vue') },
     { path: '/fleet', name: 'fleet', component: () => import('./views/FleetView.vue') },
+    { path: '/privacy', name: 'privacy', component: () => import('./views/PrivacyView.vue') },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
   scrollBehavior: (to) => (to.hash ? { el: to.hash, behavior: 'smooth' } : { top: 0 }),

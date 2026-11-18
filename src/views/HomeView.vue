@@ -83,7 +83,7 @@ const sb = (k: 'boat' | 'scooter') => products[k]
           <path d="M0 300C90 270 160 340 260 320C360 300 430 360 560 330V420H0Z" fill="#14407e" opacity=".55" />
           <path d="M120 20C220 0 300 60 350 40C420 20 500 70 540 140L560 0H120Z" fill="#e9dfc8" opacity=".9" />
           <path class="route" d="M70 250C130 200 150 130 230 150C310 170 300 250 380 230C440 215 470 140 500 110" fill="none" stroke="#ff8a6b" stroke-width="4" stroke-linecap="round" />
-          <g font-family="Roboto Mono,monospace" font-weight="700" font-size="15" fill="#f6f1e7">
+          <g font-family="Roboto Mono Variable,monospace" font-weight="700" font-size="15" fill="#f6f1e7">
             <circle cx="70" cy="250" r="8" fill="#f6f1e7" /><text x="86" y="276">ΛΙΜΑΝΙ</text>
             <circle cx="230" cy="150" r="8" fill="#e8553a" /><text x="244" y="140">A</text>
             <circle cx="380" cy="230" r="8" fill="#e8553a" /><text x="394" y="258">B</text>
