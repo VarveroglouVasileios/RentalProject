@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { scrollState } from '@/lib/scrollState'
 
 /**
  * A light Three.js sea surface drawn over the hero photo: one full-screen quad and a fragment
@@ -17,6 +18,7 @@ varying vec2 vUv;
 uniform float uTime;
 uniform vec2 uPointer;
 uniform float uAspect;
+uniform float uScroll;
 float wave(vec2 p, float t){
   float w = sin(p.x * 2.2 + t * 0.9) * 0.5;
   w += sin(p.x * 4.1 - t * 1.3 + p.y * 3.0) * 0.25;
@@ -29,7 +31,8 @@ void main(){
   for (int i = 0; i < 7; i++) {
     float fi = float(i);
     float y = 0.08 + fi * 0.062;
-    float line = abs(p.y - y - wave(p * (1.0 + fi * 0.12), uTime + fi * 1.7) * 0.022 * (1.0 + fi * 0.35));
+    float amp = 0.022 * (1.0 + uScroll * 2.2);
+    float line = abs(p.y - y - uScroll * 0.12 - wave(p * (1.0 + fi * 0.12), uTime + fi * 1.7) * amp * (1.0 + fi * 0.35));
     float thickness = 0.0045 + fi * 0.0014;
     acc += smoothstep(thickness, 0.0, line) * (0.55 - fi * 0.05);
   }
@@ -54,7 +57,7 @@ onMounted(async () => {
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
   const material = new THREE.ShaderMaterial({
     vertexShader: VERT, fragmentShader: FRAG, transparent: true,
-    uniforms: { uTime: { value: 0 }, uPointer: { value: new THREE.Vector2() }, uAspect: { value: 1.6 } },
+    uniforms: { uTime: { value: 0 }, uPointer: { value: new THREE.Vector2() }, uAspect: { value: 1.6 }, uScroll: { value: 0 } },
   })
   scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material))
 
@@ -76,6 +79,7 @@ onMounted(async () => {
   const t0 = performance.now()
   const tick = () => {
     material.uniforms.uTime.value = (performance.now() - t0) / 1000
+    material.uniforms.uScroll.value = scrollState.hero
     renderer.render(scene, camera)
     raf = visible ? requestAnimationFrame(tick) : 0
   }

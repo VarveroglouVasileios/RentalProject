@@ -141,3 +141,14 @@ table.t { width: 100%; border-collapse: collapse; min-width: 44rem; } .t th { te
 .foot-link { text-decoration: underline; text-underline-offset: 4px; min-height: 44px; display: inline-flex; align-items: center; }
 
 .sea { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+/* Motion-only styles (class added by lib/motion.ts) */
+.split .ln { display: block; overflow: hidden; padding: .08em 0 .02em; margin: -.08em 0 -.02em; }
+.split .in { display: block; }
+.motion .hero > img { animation: none; will-change: transform; }
+.motion .ticker-track { animation-duration: 40s; }
+.motion .route { animation: none; }
+.motion .bayp { opacity: .25; transition: opacity .5s ease; }
+.motion .bayp.hit { opacity: 1; }
+.motion .bay { opacity: .45; transition: opacity .5s ease, color .5s ease; }
+.motion .bay.hit { opacity: 1; color: var(--ink); }

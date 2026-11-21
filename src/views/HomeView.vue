@@ -3,7 +3,9 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { bays, products, units } from '@/data/fleet'
 import { formatEuro, freeUnits, nowStamp, priceFor, stamp, toISO } from '@/lib/rental'
+import { onBeforeUnmount, onMounted } from 'vue'
 import SeaCanvas from '@/components/SeaCanvas.vue'
+import { startHomeMotion } from '@/lib/motion'
 import { img } from '@/lib/storage'
 import { rentals } from '@/lib/store'
 
@@ -21,6 +23,10 @@ const board = computed(() => {
 const clock = new Date().toLocaleTimeString('el-GR', { hour: '2-digit', minute: '2-digit' })
 const marquee = 'Σκάφη χωρίς δίπλωμα ✦ Scooter 125cc ✦ Σωσίβια δωρεάν ✦ Παραλαβή στο λιμάνι ✦ Ακύρωση έως 48 ώρες ✦ '.repeat(2)
 const sb = (k: 'boat' | 'scooter') => products[k]
+
+let stopMotion: (() => void) | null = null
+onMounted(async () => { stopMotion = await startHomeMotion() })
+onBeforeUnmount(() => stopMotion?.())
 </script>
 
 <template>
@@ -30,7 +36,7 @@ const sb = (k: 'boat' | 'scooter') => products[k]
     <div class="wrap hero-in">
       <div>
         <p class="coord mono">40°46′N · 24°42′E · ΛΙΜΑΝΙ ΘΑΣΟΥ</p>
-        <h1 id="h">Βγείτε<br />στ' ανοιχτά.</h1>
+        <h1 id="h" class="split"><span class="ln"><span class="in">Βγείτε</span></span><span class="ln"><span class="in">στ' ανοιχτά.</span></span></h1>
         <p class="lead">Σκάφη χωρίς δίπλωμα και scooter. Κλείνετε σε ένα λεπτό, παραλαμβάνετε από το λιμάνι.</p>
       </div>
       <div class="board" aria-label="Αναχωρήσεις σήμερα">
@@ -76,7 +82,7 @@ const sb = (k: 'boat' | 'scooter') => products[k]
       <div>
         <h2 id="b">Τρεις κόλποι,<br />μία διαδρομή.</h2>
         <p class="hint" style="max-width: 26rem; margin: 1.5rem 0">Προτεινόμενη διαδρομή για τις 4 ώρες: ένα κολύμπι, μια στάση για snorkel και επιστροφή πριν το σούρουπο.</p>
-        <div class="bay" v-for="b in bays" :key="b[0]"><span>{{ b[0] }} · {{ b[1] }}</span><b>{{ b[2] }}΄</b></div>
+        <div class="bay" v-for="b in bays" :key="b[0]" :data-bay="b[0]"><span>{{ b[0] }} · {{ b[1] }}</span><b>{{ b[2] }}΄</b></div>
         <div class="bay" style="border-bottom: 1px solid var(--line)"><span>Επιστροφή στο λιμάνι</span><b>—</b></div>
       </div>
       <div class="map">
@@ -84,14 +90,14 @@ const sb = (k: 'boat' | 'scooter') => products[k]
           <path d="M0 0H560V420H0Z" fill="#0f3160" />
           <path d="M0 300C90 270 160 340 260 320C360 300 430 360 560 330V420H0Z" fill="#14407e" opacity=".55" />
           <path d="M120 20C220 0 300 60 350 40C420 20 500 70 540 140L560 0H120Z" fill="#e9dfc8" opacity=".9" />
-          <path class="route" d="M70 250C130 200 150 130 230 150C310 170 300 250 380 230C440 215 470 140 500 110" fill="none" stroke="#ff8a6b" stroke-width="4" stroke-linecap="round" />
+          <path id="route" class="route" d="M70 250C130 200 150 130 230 150C310 170 300 250 380 230C440 215 470 140 500 110" fill="none" stroke="#ff8a6b" stroke-width="4" stroke-linecap="round" />
           <g font-family="Roboto Mono Variable,monospace" font-weight="700" font-size="15" fill="#f6f1e7">
             <circle cx="70" cy="250" r="8" fill="#f6f1e7" /><text x="86" y="276">ΛΙΜΑΝΙ</text>
-            <circle cx="230" cy="150" r="8" fill="#e8553a" /><text x="244" y="140">A</text>
-            <circle cx="380" cy="230" r="8" fill="#e8553a" /><text x="394" y="258">B</text>
-            <circle cx="500" cy="110" r="8" fill="#e8553a" /><text x="468" y="98">C</text>
+            <g class="bayp" data-x="230" data-y="150"><circle cx="230" cy="150" r="8" fill="#e8553a" /><text x="244" y="140">A</text></g>
+            <g class="bayp" data-x="380" data-y="230"><circle cx="380" cy="230" r="8" fill="#e8553a" /><text x="394" y="258">B</text></g>
+            <g class="bayp" data-x="500" data-y="110"><circle cx="500" cy="110" r="8" fill="#e8553a" /><text x="468" y="98">C</text></g>
           </g>
-          <g class="bob"><path d="M52 246h36l-8 12H60z" fill="#f6f1e7" /><path d="M70 220v26" stroke="#f6f1e7" stroke-width="3" /><path d="M70 222l16 18H70z" fill="#e8553a" /></g>
+          <g id="boat"><g class="bob"><path d="M52 246h36l-8 12H60z" fill="#f6f1e7" /><path d="M70 220v26" stroke="#f6f1e7" stroke-width="3" /><path d="M70 222l16 18H70z" fill="#e8553a" /></g></g>
         </svg>
       </div>
     </section>
