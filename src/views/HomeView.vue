@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { bays, products, units } from '@/data/fleet'
 import { formatEuro, freeUnits, nowStamp, priceFor, stamp, toISO } from '@/lib/rental'
+import SeaCanvas from '@/components/SeaCanvas.vue'
 import { img } from '@/lib/storage'
 import { rentals } from '@/lib/store'
 
@@ -25,6 +26,7 @@ const sb = (k: 'boat' | 'scooter') => products[k]
 <template>
   <section class="hero" aria-labelledby="h">
     <img :src="img('motorboat')" alt="Μικρό σκάφος δεμένο σε ξύλινη αποβάθρα σε τιρκουάζ κόλπο" width="1024" height="1024" />
+    <SeaCanvas />
     <div class="wrap hero-in">
       <div>
         <p class="coord mono">40°46′N · 24°42′E · ΛΙΜΑΝΙ ΘΑΣΟΥ</p>
